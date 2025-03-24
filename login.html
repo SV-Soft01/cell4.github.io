@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión - Sistema de Gestión</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="login-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>Sistema de Gestión</h1>
+                <p>Tienda de Celulares</p>
+            </div>
+            
+            <div class="login-form">
+                <h2>Iniciar Sesión</h2>
+                
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" placeholder="Ingrese su nombre de usuario">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Ingrese su contraseña">
+                </div>
+                
+                <button id="login-btn" class="login-button">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+                
+                <div class="login-options">
+                    <button id="add-admin-btn" class="option-button admin-button">
+                        <i class="fas fa-user-shield"></i> Añadir Administrador
+                    </button>
+                    <button id="add-cashier-btn" class="option-button cashier-button">
+                        <i class="fas fa-cash-register"></i> Añadir Caja
+                    </button>
+                    <button id="add-workshop-btn" class="option-button workshop-button">
+                        <i class="fas fa-tools"></i> Añadir Taller
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección para protección con contraseña -->
+        <div id="password-protection" class="password-protection">
+            <h3>Gestión de Usuarios</h3>
+            <p>Ingrese la contraseña para acceder a la gestión de usuarios</p>
+            <div class="password-input-group">
+                <input type="password" id="admin-password-input" placeholder="Contraseña de administración">
+                <button id="verify-password-btn">
+                    <i class="fas fa-unlock"></i> Acceder
+                </button>
+            </div>
+        </div>
+        
+        <!-- Sección para mostrar la lista de usuarios (oculta por defecto) -->
+        <div id="users-list-container" style="display: none;">
+            <div class="users-section" style="margin-top: 30px;">
+                <div class="section-header">
+                    <h2>Usuarios Registrados</h2>
+                    <button id="close-user-management-btn" class="close-section-btn">
+                        <i class="fas fa-times"></i> Cerrar
+                    </button>
+                </div>
+                <div id="users-list">
+                    <!-- Aquí se mostrarán los usuarios -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección para cambiar la contraseña (oculta por defecto) -->
+        <div id="change-password-container" class="change-password-container" style="display: none;">
+            <h3>Cambiar Contraseña de Administración</h3>
+            <div class="form-group">
+                <label for="current-password">Contraseña Actual</label>
+                <input type="password" id="current-password" placeholder="Ingrese la contraseña actual">
+            </div>
+            <div class="form-group">
+                <label for="new-password-admin">Nueva Contraseña</label>
+                <input type="password" id="new-password-admin" placeholder="Ingrese la nueva contraseña">
+            </div>
+            <div class="form-group">
+                <label for="confirm-new-password">Confirmar Nueva Contraseña</label>
+                <input type="password" id="confirm-new-password" placeholder="Confirme la nueva contraseña">
+            </div>
+            <button id="change-password-btn" class="login-button">
+                <i class="fas fa-key"></i> Cambiar Contraseña
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal para añadir usuarios -->
+    <div id="add-user-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-title">Añadir Usuario</h2>
+            <form id="add-user-form">
+                <!-- Campos comunes para todos los usuarios -->
+                <div class="form-group">
+                    <label for="new-username">Nombre de Usuario</label>
+                    <input type="text" id="new-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">Contraseña</label>
+                    <input type="password" id="new-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirmar Contraseña</label>
+                    <input type="password" id="confirm-password" required>
+                </div>
+                
+                <!-- Campos específicos para administrador -->
+                <div id="admin-fields" style="display: none;">
+                    <h3>Datos de la Empresa</h3>
+                    <div class="form-group">
+                        <label for="company-name">Nombre de la Empresa</label>
+                        <input type="text" id="company-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="company-phone">Teléfono de la Empresa</label>
+                        <input type="text" id="company-phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="company-address">Dirección de la Empresa</label>
+                        <input type="text" id="company-address">
+                    </div>
+                    <div class="form-group">
+                        <label for="company-logo">Logo de la Empresa</label>
+                        <input type="file" id="company-logo" accept="image/*">
+                        <div id="logo-preview" class="logo-preview"></div>
+                    </div>
+                </div>
+                
+                <!-- Campos específicos para cajero -->
+                <div id="cashier-fields" style="display: none;">
+                    <h3>Datos del Cajero</h3>
+                    <div class="form-group">
+                        <label for="cashier-fullname">Nombre Completo</label>
+                        <input type="text" id="cashier-fullname">
+                    </div>
+                </div>
+                
+                <input type="hidden" id="user-role" value="">
+                <button type="submit" class="login-button">
+                    <i class="fas fa-user-plus"></i> Guardar Usuario
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Primero cargar Firebase -->
+    <script type="module" src="firebase-login.js"></script>
+    
+    <!-- Luego cargar el script de login -->
+    <script src="login.js"></script>
+</body>
+</html>

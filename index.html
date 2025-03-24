@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SV-SOFT-TIENDA DE CELULARES</title>
+  <script>
+    // Función para verificar si la sesión pertenece a este dispositivo
+    function verificarSesionDispositivo() {
+      // Obtener ID del dispositivo actual
+      const deviceId = localStorage.getItem("device_id");
+      
+      // Obtener datos de sesión persistente
+      const persistentUserData = localStorage.getItem("persistentUser");
+      
+      if (persistentUserData && deviceId) {
+        try {
+          // Parsear los datos de sesión
+          const sessionData = JSON.parse(persistentUserData);
+          
+          // Verificar que el ID del dispositivo coincida
+          if (sessionData.deviceId === deviceId) {
+            // Verificar si la sesión no ha expirado
+            const ultimaActividad = Number.parseInt(localStorage.getItem("ultimaActividad") || "0");
+            const ahora = Date.now();
+            const TIEMPO_INACTIVIDAD_MAX = 3600000; // 1 hora
+            
+            if (ahora - ultimaActividad < TIEMPO_INACTIVIDAD_MAX) {
+              // La sesión es válida y pertenece a este dispositivo
+              return true;
+            }
+          }
+        } catch (e) {
+          console.error("Error al verificar sesión:", e);
+        }
+      }
+      
+      // No hay sesión válida para este dispositivo
+      return false;
+    }
+    
+    // Verificar si hay una sesión activa para este dispositivo
+    if (sessionStorage.getItem("currentUser") || verificarSesionDispositivo()) {
+      // Si hay sesión activa para este dispositivo, redirigir a la página principal
+      window.location.href = "./pagina.html";
+    } else {
+      // Si no hay sesión para este dispositivo, redirigir a la página de login
+      window.location.href = "./login.html";
+    }
+  </script>
+</head>
+<body>
+  <div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column;">
+    <h2>Redirigiendo...</h2>
+    <p>Por favor espere mientras se carga la aplicación.</p>
+  </div>
+</body>
+</html>
+
